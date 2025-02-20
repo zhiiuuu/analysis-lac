@@ -30,6 +30,18 @@ pip install paddlepaddle paddlehub
 hub serving start --modules lac --port 8866 --use_multiprocess --workers 8
 ```
 
+#### Test
+```bash
+curl -X 'POST' 'http://127.0.0.1:8866/predict/lac' \
+-H 'accept: */*' \
+-H 'Content-Type: application/json' \
+-d '{
+    "text": [
+        "今天是个好日子", "天气预报说：今天要下雨"
+    ]
+}'
+```
+
 ### Install Analysis Plugin
 
 #### For Elasticsearch:
