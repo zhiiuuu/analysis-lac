@@ -35,13 +35,13 @@ hub serving start --modules lac --port 8866 --use_multiprocess --workers 8
 #### For Elasticsearch:
 
 ```bash
-bin/elasticsearch-plugin install https://get.infini.cloud/elasticsearch/analysis-ik/8.4.1
+bin/elasticsearch-plugin install https://github.com/thundax-lyp/analysis-lac/releases/download/8.12.2/elasticsearch-analysis-lac-8.12.2.jar
 ```
 
 #### For OpenSearch:
 
 ```bash
-bin/opensearch-plugin install https://get.infini.cloud/opensearch/analysis-ik/2.12.0
+bin/opensearch-plugin install https://github.com/thundax-lyp/analysis-lac/releases/download/8.12.2/elasticsearch-analysis-lac-8.12.2.jar
 ```
 
 ### ⚠️ **Tip**
