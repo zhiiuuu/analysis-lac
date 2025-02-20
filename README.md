@@ -84,7 +84,7 @@ curl -XPOST http://localhost:9200/index/_create/1 \
 
 ## Configuration
 
-Config file `LacAnalyzer.cfg.xml` can be located at `{conf}/analysis-lac/config/IKAnalyzer.cfg.xml`
+Config file `LacAnalyzer.cfg.xml` can be located at `{conf}/analysis-lac/config/LacAnalyzer.cfg.xml`
 or `{plugins}/elasticsearch-analysis-lac-*/config/LacAnalyzer.cfg.xml`
 
 ```xml
