@@ -6,7 +6,7 @@ The plugin comprises analyzer: lac, and tokenizer: lac.
 
 ## 🛠️ How to Install
 
-### Install LAC Service by PaddleHub**
+### Install LAC Service by PaddleHub
 
 > See [PaddleHub](https://www.paddlepaddle.org.cn/hubdetail?name=lac&en_category=LexicalAnalysis)
 
