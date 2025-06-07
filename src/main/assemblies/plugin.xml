@@ -1,21 +1,39 @@
 <?xml version="1.0"?>
+<!-- 声明 XML 文件版本 -->
 <assembly>
+
+    <!-- 组装包的 ID，最终打包文件名会包含该 ID，例如：analysis-lac-release.zip -->
     <id>analysis-lac-release</id>
+
+    <!-- 打包格式：此处为 zip 压缩包，还支持 tar.gz、tar.bz2 等 -->
     <formats>
         <format>zip</format>
     </formats>
+
+    <!-- 是否将基础目录（即项目根路径）包含在压缩包中 -->
     <includeBaseDirectory>false</includeBaseDirectory>
+
+    <!-- fileSets 指定需要包含的文件夹内容 -->
     <fileSets>
         <fileSet>
-        <directory>${project.basedir}/config</directory>
+            <!-- 指定要包含的目录，此处是项目根目录下的 config 文件夹 -->
+            <directory>${project.basedir}/config</directory>
+
+            <!-- 设置它在压缩包中的路径，表示打包后的 config 目录下保留此内容 -->
             <outputDirectory>config</outputDirectory>
         </fileSet>
     </fileSets>
 
+    <!-- files 用于单独指定要包含的单个文件 -->
     <files>
         <file>
+            <!-- 指定单个文件的路径 -->
             <source>${project.basedir}/src/main/resources/plugin-descriptor.properties</source>
+
+            <!-- 输出目录为空，表示放在压缩包根目录下 -->
             <outputDirectory/>
+
+            <!-- 是否对文件内容进行 Maven 过滤（如替换 ${} 变量） -->
             <filtered>true</filtered>
         </file>
         <file>
@@ -24,19 +42,33 @@
             <filtered>true</filtered>
         </file>
     </files>
+
+    <!-- dependencySets 用于控制依赖项的打包 -->
     <dependencySets>
+
+        <!-- 第一个 dependencySet：排除 elasticsearch 主程序 -->
         <dependencySet>
+            <!-- 表示打包时依赖文件输出到压缩包的哪个目录，这里为空代表压缩包根目录 -->
             <outputDirectory/>
+
+            <!-- 是否将本项目构建出来的 artifact（如 jar 包）一并打包进去 -->
             <useProjectArtifact>true</useProjectArtifact>
+
+            <!-- 是否包含传递依赖（即间接依赖） -->
             <useTransitiveFiltering>true</useTransitiveFiltering>
+
+            <!-- 排除某些依赖，这里排除了 elasticsearch 主程序，避免重复或冲突 -->
             <excludes>
                 <exclude>org.elasticsearch:elasticsearch</exclude>
             </excludes>
         </dependencySet>
+
+        <!-- 第二个 dependencySet：没有排除项，相当于默认规则 -->
         <dependencySet>
             <outputDirectory/>
             <useProjectArtifact>true</useProjectArtifact>
             <useTransitiveFiltering>true</useTransitiveFiltering>
         </dependencySet>
     </dependencySets>
+
 </assembly>

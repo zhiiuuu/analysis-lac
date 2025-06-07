@@ -1,5 +1,8 @@
 package com.thundax.analysis.core;
 
+/**
+ * 表示一个词元,包含文本/起止位置/类型
+ */
 public class Lexeme implements Comparable<Lexeme> {
 
     /**
@@ -10,18 +13,24 @@ public class Lexeme implements Comparable<Lexeme> {
     private int length;
 
     /**
-     * 词元文本，词元类型
+     * 词元文本,如"世界"
      */
     private String lexemeText;
+    /**
+     * 词元类型(如"n"表示名词,"v"表示动词等)
+     */
     private String lexemeType;
 
-
+    /**
+     * 初始化词元
+     */
     public Lexeme(int offset, int begin, int length, String lexemeType, String lexemeText) {
-        this.offset = offset;
-        this.begin = begin;
+        // 校验词元长度 >= 0,否则抛异常
         if (length < 0) {
             throw new IllegalArgumentException("length < 0");
         }
+        this.offset = offset;
+        this.begin = begin;
         this.length = length;
         this.lexemeText = lexemeText;
         this.lexemeType = lexemeType;
@@ -30,6 +39,7 @@ public class Lexeme implements Comparable<Lexeme> {
     /**
      * 判断词元相等算法
      * 起始位置偏移、起始位置、终止位置相同
+     * 比较两个词元是否表示同一个文本片段（仅比较位置与长度，不比较文本内容和类型）。
      *
      * @param o object to compare
      * @return boolean indicating
@@ -44,6 +54,7 @@ public class Lexeme implements Comparable<Lexeme> {
             return true;
         }
 
+        // Java16+de模式匹配(Pattern Matching)语法 等同于 (Lexeme other = (Lexeme) o;)
         if (o instanceof Lexeme other) {
             return this.offset == other.getOffset()
                     && this.begin == other.getBegin()
@@ -55,6 +66,7 @@ public class Lexeme implements Comparable<Lexeme> {
 
     /**
      * 词元哈希编码算法
+     * 自定义 hash 生成逻辑，用于 HashMap 等容器中区分词元。
      *
      * @return hash code
      */
@@ -62,11 +74,15 @@ public class Lexeme implements Comparable<Lexeme> {
     public int hashCode() {
         int absBegin = getBeginPosition();
         int absEnd = getEndPosition();
+        // 质数乘法
         return (absBegin * 37) + (absEnd * 31) + ((absBegin * absEnd) % getLength()) * 11;
     }
 
     /**
      * 词元在排序集合中的比较算法
+     * 1.先比 begin：靠前的排前面
+     * 2.再比 length：长的排前面
+     * 3.最终影响分词重叠处理、合并等行为
      *
      * @param other the other
      * @return equals
@@ -84,12 +100,9 @@ public class Lexeme implements Comparable<Lexeme> {
             } else if (this.length == other.getLength()) {
                 return 0;
             } else {
-                //this.length < other.getLength()
                 return 1;
             }
-
         } else {
-            //this.begin > other.getBegin()
             return 1;
         }
     }
@@ -188,6 +201,9 @@ public class Lexeme implements Comparable<Lexeme> {
      * @return boolean 词元是否成功合并
      */
     public boolean append(Lexeme l, String lexemeType) {
+        // 用于将两个相邻的词元合并成一个。规则：
+        // 1.当前词元结束位置正好等于另一个词元起始位置；
+        // 2.合并后更新长度与词元类型。
         if (l != null && this.getEndPosition() == l.getBeginPosition()) {
             this.length += l.getLength();
             this.lexemeType = lexemeType;
